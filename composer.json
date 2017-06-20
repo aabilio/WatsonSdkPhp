@@ -1,0 +1,26 @@
+{
+    "name": "aabilio/watson-sdk-php",
+    "description": "IBM Watson PHP SDK",
+    "type": "library",
+    "require": {
+        "rmccue/requests": "^1.7",
+        "phpunit/phpunit": "^5.7"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Abilio Almeida Eiroa",
+            "email": "aabilio@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "WatsonSdkPhp\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "WatsonSdkPhp\\Tests\\": "tests/"
+        }
+    }
+}
