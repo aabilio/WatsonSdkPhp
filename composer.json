@@ -1,7 +1,8 @@
 {
-    "name": "aabilio/watson-sdk-php",
+    "name": "aabilio/WatsonSdkPhp",
     "description": "IBM Watson PHP SDK",
     "type": "library",
+    "version": "1.0.0",
     "require": {
         "rmccue/requests": "^1.7",
         "phpunit/phpunit": "^5.7"

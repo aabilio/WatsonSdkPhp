@@ -88,5 +88,21 @@ class WatsonConversation {
         return $response;
     }
 
+    /**
+     * Init Watson Conversation.
+     * It seems that IBM do not provide a simple way to start the conversation with the bot,
+     * so here we send an empty message to start the conversation. At the same time it can
+     * be used to set the initial context for the conversation.
+     *
+     * @param null|array $context
+     *
+     * @return array
+     * @throws WatsonRequestException
+     */
+    public function initConversation ($context) {
+        if (isset($context)) { $this->context = $context; }
+        return $this->say("", $context);
+    }
+
 
 }
