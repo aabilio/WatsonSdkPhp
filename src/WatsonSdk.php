@@ -1,6 +1,6 @@
 <?php
 
-namespace WatsonSdkPhp\Sdk;
+namespace WatsonSdkPhp;
 
 use WatsonSdkPhp\Exceptions\WatsonGeneralException;
 use WatsonSdkPhp\Helpers\HttpClient;

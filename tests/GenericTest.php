@@ -5,8 +5,8 @@ namespace WatsonSdkPhp\Tests;
 use PHPUnit_Framework_TestCase;
 use WatsonSdkPhp\Exceptions\WatsonGeneralException;
 use WatsonSdkPhp\Exceptions\WatsonRequestException;
-use WatsonSdkPhp\Sdk\Services\Conversation\V1\WatsonConversationService;
-use WatsonSdkPhp\Sdk\Classes\Conversation\V1\WatsonConversation;
+use WatsonSdkPhp\Factories\WatsonFactory;
+use WatsonSdkPhp\Services\Conversation\V1\WatsonConversationService;
 
 ini_set('error_reporting', E_ALL); // or error_reporting(E_ALL);
 ini_set('display_errors', '1');
@@ -14,12 +14,8 @@ ini_set('display_startup_errors', '1');
 
 class GenericTest extends PHPUnit_Framework_TestCase {
 
-    // To test you need to set here a valid credentials
-
-	/** @var null|WatsonConversationService */
+    /** @var null|WatsonConversationService */
 	protected $conversationService;
-	/** @var null|WatsonConversation */
-    protected $conversation;
     /** @var null|array */
     protected $settings;
 
@@ -31,12 +27,9 @@ class GenericTest extends PHPUnit_Framework_TestCase {
             exit(1);
         }
 
-		$this->conversationService = new WatsonConversationService(
-            $this->settings["watson_username"],
-            $this->settings["watson_password"],
-            $this->settings["watson_workspace_id"]
-        );
-		$this->conversation = $this->conversationService->createConversation();
+        $watsonFactory = new WatsonFactory($this->settings["watson_username"], $this->settings["watson_password"]);
+        $this->conversationService = $watsonFactory
+            ->createConversationServiceV1($this->settings["watson_workspace_id"]);
 	}
 
 	private function getConfiguration () {
@@ -56,15 +49,6 @@ class GenericTest extends PHPUnit_Framework_TestCase {
 
     public function testGeneric () {
         //
-    }
-
-    public function testConversationClass () {
-        $this->conversation->say("Hi!", array("name" => "Abilio"));
-        $this->conversation->say("aabilio");
-        $this->assertEquals(
-            "Cuándo naciste",
-            $this->conversation->getTextResponse()[0]
-        );
     }
 
 	public function testConversationWorkspaceExistence () {
@@ -103,8 +87,8 @@ class GenericTest extends PHPUnit_Framework_TestCase {
 
     public function testConversationMessageEndpoint () {
         try {
-            $response = $this->conversationService->sendMessage("Hi!");
-            $this->assertArrayHasKey("input", $response);
+            $conversation = $this->conversationService->sendMessage("Hi!");
+            $this->assertArrayHasKey("input", $conversation->getRaw());
         } catch (WatsonRequestException $exception) {
             $this->fail($exception->getMessage());
         }

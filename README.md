@@ -21,22 +21,27 @@ PHP SDK for IBM Watson services
 
 require_once __DIR__ . '/vendor/autoload.php'; // Autoload files using Composer autoload
 
-use WatsonSdkPhp\Sdk\Services\Conversation\V1\WatsonConversationService;
+use WatsonSdkPhp\Factories\WatsonFactory;
+// use WatsonSdkPhp\Services\Conversation\V1\WatsonConversationService;
 
-// Using the Conversation Service directly
-$conversationService = new WatsonConversationService("<username>", "<password>", "<workspace_id>");
-$response = $conversationService->sendMessage("Hi!");
-foreach ($response["output"]["text"] as $msg) { echo $msg . "\n"; }
-$conversationService->sendMessage("OK", $response["context"]);
+// Getting Conversation Service
+$watsonFactory = new WatsonFactory("<username>", "<password>");
+$conversationService = $watsonFactory->createConversationServiceV1("<workspace_id>");
+// or $conversationService = new WatsonConversationService("<username>", "<password>", "workspace_id");
 
-// Using the WatsonConversation to auto manage the context
-$conversation = $conversationService->createConversation();
-$conversation->say("hi!");
-foreach ($conversation->getTextResponse() as $msg) { echo $msg . "\n"; }
-$conversation->say("OK");
-
-// Getting current conversation context, intents and entities
+// Send message
+$conversation = $conversationService->sendMessage("Hi!");
+// Get the response and the context
 $context = $conversation->getContext();
+$messages = $conversation->getTextResponse();
+foreach ($messages as $msg) { echo $msg . "\n"; }
+// Respond using the context
+$conversation = $conversationService->sendMessage("OK", $context);
+foreach ($conversation->getTextResponse() as $msg) { echo $msg . "\n"; }
+
+// Getting current conversation intents and entities
 $intents = $conversation->getIntents();
+var_dump($intents);
 $entities = $conversation->getEntities();
+var_dump($entities);
 ```

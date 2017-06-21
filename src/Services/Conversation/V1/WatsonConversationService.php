@@ -1,13 +1,14 @@
 <?php
 
-namespace WatsonSdkPhp\Sdk\Services\Conversation\V1;
+namespace WatsonSdkPhp\Services\Conversation\V1;
 
 use WatsonSdkPhp\Exceptions\WatsonGeneralException;
 use WatsonSdkPhp\Exceptions\WatsonRequestException;
-use WatsonSdkPhp\Sdk\Classes\Conversation\V1\WatsonConversation;
-use WatsonSdkPhp\Sdk\WatsonSdk;
+use WatsonSdkPhp\Classes\Conversation\V1\WatsonConversation;
+use WatsonSdkPhp\WatsonSdk;
 
-class WatsonConversationService extends WatsonSdk {
+class WatsonConversationService extends WatsonSdk
+{
     /**
      * Base url for the service
      *
@@ -43,15 +44,39 @@ class WatsonConversationService extends WatsonSdk {
      * @param $username string The service api username
      * @param $password string The service api password
      */
-    public function __construct($username = null, $password = null, $workspaceId = null) {
+    public function __construct($username = null, $password = null, $workspaceId = null)
+    {
         parent::__construct($username, $password);
 
-        if (!$this->validateWorkspaceId($workspaceId)) {
+        if (isset($workspaceId) && !$this->validateWorkspaceId($workspaceId)) {
             throw new WatsonGeneralException("Invalid workspace id");
         }
 
         $this->workspaceId = $workspaceId;
 
+    }
+
+    /**
+     * Get Workspace Id
+     *
+     * @return null|string
+     */
+    public function getWorkspaceId()
+    {
+        return $this->workspaceId;
+    }
+
+    /**
+     * Set Workspace Id
+     *
+     * @param null|string $workspaceId
+     *
+     * @return WatsonConversationService
+     */
+    public function setWorkspaceId($workspaceId)
+    {
+        $this->workspaceId = $workspaceId;
+        return $this;
     }
 
     /**
@@ -62,7 +87,8 @@ class WatsonConversationService extends WatsonSdk {
      *
      * @return string
      */
-    public function getMethodUrl ($methodName, $parameters = null) {
+    public function getMethodUrl($methodName, $parameters = null)
+    {
         if (!array_key_exists($methodName, self::$endpoints)) {
             throw new WatsonGeneralException("Invalid method name");
         }
@@ -84,7 +110,8 @@ class WatsonConversationService extends WatsonSdk {
      *
      * @return boolean
      */
-    public function validateWorkspaceId ($workspaceId = null) {
+    public function validateWorkspaceId($workspaceId = null)
+    {
         $endpoint = $this->getMethodUrl("GET_WORKSPACE", array("workspaceId" => $workspaceId));
         $url = $this->buildUrl($endpoint);
 
@@ -104,7 +131,8 @@ class WatsonConversationService extends WatsonSdk {
      *
      * @return array
      */
-    public function buildMessage ($message, $context = null) {
+    public function buildMessage($message, $context = null)
+    {
         $msg = array(
             "input" => array(
                 "text" => $message
@@ -123,24 +151,34 @@ class WatsonConversationService extends WatsonSdk {
      *
      * @param string $message
      * @param null|array $context
+     * @param null|string $workspaceId
      *
-     * @return array
+     * @return WatsonConversation
      * @throws WatsonRequestException
      */
-    public function sendMessage ($message, $context = null) {
-        $endpoint = $this->getMethodUrl("MESSAGE", array("workspaceId" => $this->workspaceId));
+    public function sendMessage($message = "", $context = null, $workspaceId = null)
+    {
+        $workspaceId = (isset($workspaceId)) ? $workspaceId : $this->workspaceId;
+        $endpoint = $this->getMethodUrl("MESSAGE", array("workspaceId" => $workspaceId));
         $url = $this->buildUrl($endpoint);
         $data = $this->buildMessage($message, $context);
 
-        return $this->httpClient->post($url, $data);
+        return new WatsonConversation($this->httpClient->post($url, $data));
     }
 
     /**
-     * Factory function to create different Watson conversations with managed context
+     * Start a user conversation
+     *
+     * @param null|string $workspaceId
+     * @param null|array $context
      *
      * @return WatsonConversation
+     * @throws WatsonRequestException
      */
-    public function createConversation () {
-        return new WatsonConversation($this);
+    public function startConversation($workspaceId = null, $context = null)
+    {
+        $workspaceId = (isset($workspaceId)) ? $workspaceId : $this->workspaceId;
+        return $this->sendMessage("", $context, $workspaceId);
     }
+
 }
