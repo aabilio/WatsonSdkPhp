@@ -1,4 +1,5 @@
 # IBM Watson Services PHP SDK
+[![Build Status](https://travis-ci.org/aabilio/WatsonSdkPhp.svg?branch=master)](https://travis-ci.org/aabilio/WatsonSdkPhp)
 
 PHP SDK for IBM Watson services
 
