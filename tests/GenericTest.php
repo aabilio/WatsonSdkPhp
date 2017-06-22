@@ -16,43 +16,46 @@ class GenericTest extends PHPUnit_Framework_TestCase {
 
     /** @var null|WatsonConversationService */
 	protected $conversationService;
+    /** @var boolean */
+    protected $settingsSuccess;
     /** @var null|array */
     protected $settings;
 
     protected function setUp () {
-        $this->settings = $this->getConfiguration();
-        if (!isset($this->settings)) {
-            echo "Need a settings.ini on test directory with the 'watson_username', 'watson_password' and" .
-                "'watson_workspace_id'";
-            exit(1);
-        }
+        list($this->settingsSuccess, $this->settings) = $this->settings = $this->getConfiguration();
 
         $watsonFactory = new WatsonFactory($this->settings["watson_username"], $this->settings["watson_password"]);
-        $this->conversationService = $watsonFactory
-            ->createConversationServiceV1($this->settings["watson_workspace_id"]);
+        if ($this->settingsSuccess) {
+            $this->conversationService = $watsonFactory
+                ->createConversationServiceV1($this->settings["watson_workspace_id"]);
+        } else {
+            $this->conversationService = new
+                WatsonConversationService($this->settings["watson_username"], $this->settings["watson_password"]);
+        }
 	}
 
 	private function getConfiguration () {
+        $success = true;
+        $settings = array(
+            "watson_username" => "X",
+            "watson_password" => "Y",
+            "watson_workspace_id" => "Z"
+        );
         try {
             $settings = parse_ini_file("settings.ini");
         } catch (\Exception $exception) {
-            $settings = null;
+            $success = false;
         }
 
-        return (
-            !isset($settings) ||
-            !array_key_exists("watson_username", $settings) ||
-            !array_key_exists("watson_password", $settings) ||
-            !array_key_exists("watson_workspace_id", $settings)
-        ) ? null : $settings;
-    }
-
-    public function testGeneric () {
-        //
+        return array($success, $settings);
     }
 
 	public function testConversationWorkspaceExistence () {
-        $this->assertTrue($this->conversationService->validateWorkspaceId($this->settings["watson_workspace_id"]));
+        if ($this->settingsSuccess) {
+            $this->assertTrue($this->conversationService->validateWorkspaceId($this->settings["watson_workspace_id"]));
+        } else {
+            $this->assertFalse($this->conversationService->validateWorkspaceId($this->settings["watson_workspace_id"]));
+        }
     }
 
     public function testConversationSuccessOnGetMethodUrl () {
@@ -86,11 +89,16 @@ class GenericTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testConversationMessageEndpoint () {
-        try {
+        if ($this->settingsSuccess) {
+            try {
+                $conversation = $this->conversationService->sendMessage("Hi!");
+                $this->assertArrayHasKey("input", $conversation->getRaw());
+            } catch (WatsonRequestException $exception) {
+                $this->fail($exception->getMessage());
+            }
+        } else {
+            $this->setExpectedException(WatsonRequestException::class);
             $conversation = $this->conversationService->sendMessage("Hi!");
-            $this->assertArrayHasKey("input", $conversation->getRaw());
-        } catch (WatsonRequestException $exception) {
-            $this->fail($exception->getMessage());
         }
     }
 }
