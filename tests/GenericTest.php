@@ -106,6 +106,23 @@ class GenericTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
+     * Test getConversationId method from Watson Conversation Class
+     */
+    public function testConversationGetConversationId () {
+        if ($this->settingsSuccess) {
+            try {
+                $conversation = $this->conversationService->sendMessage("Hi!");
+                $this->assertNotNull($conversation->getConversationId());
+            } catch (WatsonRequestException $exception) {
+                $this->fail($exception->getMessage());
+            }
+        } else {
+            $this->setExpectedException(WatsonRequestException::class);
+            $conversation = $this->conversationService->sendMessage("Hi!");
+        }
+    }
+
+    /**
      * Test sendMessage method from Watson Conversation Service
      */
     public function testConversationMessageEndpoint () {

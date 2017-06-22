@@ -7,6 +7,8 @@ use WatsonSdkPhp\Services\Conversation\V1\WatsonConversationService;
 
 class WatsonConversation {
 
+    /** @var string */
+    private $conversationId;
     /** @var array */
     private $context;
     /** @var array */
@@ -28,6 +30,7 @@ class WatsonConversation {
      * @param array $data
      */
     public function __construct ($data) {
+        $this->conversationId = $data["context"]["conversation_id"];
         $this->textResponse = $data["output"]["text"];
         $this->intents = $data["intents"];
         $this->entities = $data["entities"];
@@ -35,6 +38,24 @@ class WatsonConversation {
         $this->input = $data["input"];
         $this->output = $data["output"];
         $this->raw = $data;
+    }
+
+    /**
+     * Get conversation id
+     *
+     * @return string
+     */
+    public function getConversationId () {
+        return $this->conversationId;
+    }
+
+    /**
+     * Set conversation id
+     *
+     * @param string $conversationId
+     */
+    public function setConversationId ($conversationId) {
+        $this->conversationId = $conversationId;
     }
 
     /**
