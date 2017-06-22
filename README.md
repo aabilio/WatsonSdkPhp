@@ -5,7 +5,6 @@ PHP SDK for IBM Watson services
 
 **Note: This project is at an early stage of development and should not be used for production.**
 
-
 ### Fully developed services
 
  * 
@@ -14,6 +13,8 @@ PHP SDK for IBM Watson services
 
  * Watson Conversation Service
 
+
+[Online PHP Docs here](https://aabilio.github.io/WatsonSdkPhp/index.html)
 
 ## Using Conversation Service Version 1
 

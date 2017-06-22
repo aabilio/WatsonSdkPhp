@@ -3,4 +3,4 @@
 vendor
 tests/settings.ini
 build
-buildDocs.sh
+generate_docs.sh
