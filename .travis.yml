@@ -9,4 +9,7 @@ php:
 before_script:
   - composer self-update
   - composer install
+
 script: vendor/bin/phpunit
+
+dist: trusty
