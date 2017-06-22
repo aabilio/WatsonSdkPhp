@@ -43,14 +43,16 @@ class WatsonSdk {
      * @var string
      */
     protected $password;
+
     /**
-     * The base service constructor
+     * WatsonSdk constructor.
      *
-     * @param $username string The service api username
-     * @param $password string The service api password
+     * @param null|string $username
+     * @param null|string $password
+     *
+     * @throws WatsonGeneralException
      */
-    public function __construct($username = null, $password = null)
-    {
+    public function __construct ($username = null, $password = null) {
         if (!$this->validateUserAndPassword($username, $password)) {
             throw new WatsonGeneralException("Bad username or password format");
         }
@@ -59,15 +61,122 @@ class WatsonSdk {
         $this->setPassword($password);
         $this->httpClient = new HttpClient($username, $password);
     }
+
     /**
-     * {@inheritdoc}
+     * Get url
+     *
+     * @return string
      */
-    public function getUrl()
-    {
+    public function getUrl () {
         return $this->url;
     }
+
     /**
-     * {@inheritdoc}
+     * Set url
+     *
+     * @param $url
+     *
+     * @return $this
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+        return $this;
+    }
+
+    /**
+     * Get version
+     *
+     * @return string
+     */
+    public function getVersion () {
+        return $this->version;
+    }
+
+    /**
+     * Set version
+     *
+     * @param $version
+     *
+     * @return $this
+     */
+    public function setVersion ($version) {
+        $this->version = $version;
+        return $this;
+    }
+
+    /**
+     * Get date version
+     *
+     * @return string
+     */
+    public function getDateVersion () {
+        return $this->dateVersion;
+    }
+
+    /**
+     * Set date version
+     *
+     * @param $dateVersion
+     *
+     * @return $this
+     */
+    public function setDateVersion ($dateVersion) {
+        $this->dateVersion = $dateVersion;
+        return $this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string
+     */
+    public function getPassword () {
+        return $this->password;
+    }
+
+    /**
+     * Set password
+     *
+     * @param $password
+     *
+     * @return $this
+     */
+    public function setPassword ($password) {
+        $this->password = $password;
+        return $this;
+    }
+
+    /**
+     * Get username
+     *
+     * @return string
+     */
+    public function getUsername () {
+        return $this->username;
+    }
+
+    /**
+     * Set username
+     *
+     * @param $username
+     *
+     * @return $this
+     */
+    public function setUsername ($username) {
+        $this->username = $username;
+        return $this;
+    }
+
+    /**
+     * Build the final complete endpoint url
+     *
+     * @param string $endpoint
+     * @param array $parameters
+     *
+     * @return string
+     *
+     * @throws WatsonGeneralException
      */
     public function buildUrl ($endpoint = "/", $parameters = array()) {
         if ($this->url === null) {
@@ -104,73 +213,6 @@ class WatsonSdk {
         }
 
         return $ret;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setUrl($url)
-    {
-        $this->url = $url;
-        return $this;
-    }
-    /**
-     * {@inheritdoc}
-     */
-    public function getVersion()
-    {
-        return $this->version;
-    }
-    /**
-     * {@inheritdoc}
-     */
-    public function setVersion($version)
-    {
-        $this->version = $version;
-        return $this;
-    }
-    /**
-     * {@inheritdoc}
-     */
-    public function getDateVersion()
-    {
-        return $this->dateVersion;
-    }
-    /**
-     * {@inheritdoc}
-     */
-    public function setDateVersion($dateVersion)
-    {
-        $this->dateVersion = $dateVersion;
-        return $this;
-    }
-    /**
-     * @return string
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-    /**
-     * @param string $password
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-    }
-    /**
-     * @return string
-     */
-    public function getUsername()
-    {
-        return $this->username;
-    }
-    /**
-     * @param string $username
-     */
-    public function setUsername($username)
-    {
-        $this->username = $username;
     }
 
     /**

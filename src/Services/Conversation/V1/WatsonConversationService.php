@@ -29,20 +29,28 @@ class WatsonConversationService extends WatsonSdk
     protected $dateVersion = '2017-05-26';
     /**
      * Watson conversation workspace id
+     *
      * @var null|string
      */
     private $workspaceId = null;
-
+    /**
+     * Watson Conversation Service API endpoints
+     *
+     * @var array
+     */
     private static $endpoints = array(
         "GET_WORKSPACE" => "/workspaces/{workspaceId}",
         "MESSAGE" => "/workspaces/{workspaceId}/message"
     );
 
     /**
-     * Watson WatsonConversation constructor
+     * WatsonConversationService constructor.
      *
-     * @param $username string The service api username
-     * @param $password string The service api password
+     * @param null|string $username
+     * @param null|string $password
+     * @param null|string $workspaceId
+     *
+     * @throws WatsonGeneralException
      */
     public function __construct($username = null, $password = null, $workspaceId = null)
     {

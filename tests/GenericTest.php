@@ -34,6 +34,11 @@ class GenericTest extends PHPUnit_Framework_TestCase {
         }
 	}
 
+    /**
+     * Get the configuration from settings.ini file or set generic invalid credentials
+     *
+     * @return array ($success, $settings)
+     */
 	private function getConfiguration () {
         $success = true;
         $settings = array(
@@ -50,6 +55,9 @@ class GenericTest extends PHPUnit_Framework_TestCase {
         return array($success, $settings);
     }
 
+    /**
+     * Test validateWorkspaceId method from Watson Conversation Service
+     */
 	public function testConversationWorkspaceExistence () {
         if ($this->settingsSuccess) {
             $this->assertTrue($this->conversationService->validateWorkspaceId($this->settings["watson_workspace_id"]));
@@ -58,6 +66,9 @@ class GenericTest extends PHPUnit_Framework_TestCase {
         }
     }
 
+    /**
+     * Test success call to getMethodUrl method from Watson Conversation Service
+     */
     public function testConversationSuccessOnGetMethodUrl () {
         $this->assertEquals(
             "/workspaces/".$this->settings["watson_workspace_id"],
@@ -67,11 +78,17 @@ class GenericTest extends PHPUnit_Framework_TestCase {
         );
     }
 
+    /**
+     * Test fail call to getMethodUrl method from Watson Conversation Service
+     */
     public function testConversationErrorOnGetMethodUrl () {
         $this->setExpectedException(WatsonGeneralException::class, "Invalid method name");
         $this->conversationService->getMethodUrl("GET_WORLD");
     }
 
+    /**
+     * Test buildMessage method from Watson Conversation Service with and without context as a paramenter
+     */
     public function testConversationBuildMessage () {
         $textMessage = "Hi!";
         $context = array("a" => "b");
@@ -88,6 +105,9 @@ class GenericTest extends PHPUnit_Framework_TestCase {
         );
     }
 
+    /**
+     * Test sendMessage method from Watson Conversation Service
+     */
     public function testConversationMessageEndpoint () {
         if ($this->settingsSuccess) {
             try {

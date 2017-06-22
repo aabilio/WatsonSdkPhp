@@ -26,7 +26,6 @@ class WatsonConversation {
      * WatsonConversation constructor.
      *
      * @param array $data
-     *
      */
     public function __construct ($data) {
         $this->textResponse = $data["output"]["text"];
@@ -61,6 +60,7 @@ class WatsonConversation {
 
     /**
      * Get conversation input
+     *
      * @return null|array
      */
     public function getInput () {

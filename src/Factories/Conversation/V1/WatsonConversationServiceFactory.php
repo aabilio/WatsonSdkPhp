@@ -17,6 +17,13 @@ class WatsonConversationServiceFactory {
     /** @var null|string */
     private $workspaceId;
 
+    /**
+     * WatsonConversationServiceFactory constructor.
+     *
+     * @param null $username
+     * @param null $password
+     * @param null $workspaceId
+     */
     public function __construct ($username = null, $password = null, $workspaceId = null) {
         $this->username = $username;
         $this->password = $password;
@@ -24,6 +31,8 @@ class WatsonConversationServiceFactory {
     }
 
     /**
+     * Get username
+     *
      * @return null|string
      */
     public function getUsername()
@@ -32,6 +41,8 @@ class WatsonConversationServiceFactory {
     }
 
     /**
+     * Set username
+     *
      * @param null|string $username
      */
     public function setUsername($username)
@@ -40,6 +51,8 @@ class WatsonConversationServiceFactory {
     }
 
     /**
+     * Get password
+     *
      * @return null|string
      */
     public function getPassword()
@@ -48,6 +61,8 @@ class WatsonConversationServiceFactory {
     }
 
     /**
+     * Set password
+     *
      * @param null|string $password
      */
     public function setPassword($password)
@@ -56,6 +71,8 @@ class WatsonConversationServiceFactory {
     }
 
     /**
+     * Get workspace id
+     *
      * @return null|string
      */
     public function getWorkspaceId()
@@ -64,6 +81,8 @@ class WatsonConversationServiceFactory {
     }
 
     /**
+     * Set workspace id
+     *
      * @param null|string $workspaceId
      */
     public function setWorkspaceId($workspaceId)
@@ -71,6 +90,11 @@ class WatsonConversationServiceFactory {
         $this->workspaceId = $workspaceId;
     }
 
+    /**
+     * Create conversation service
+     *
+     * @return WatsonConversationService
+     */
     public function createConversationService () {
         $conversationService = new WatsonConversationService($this->username, $this->password, $this->workspaceId);
         $this->services[] = $conversationService;

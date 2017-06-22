@@ -15,12 +15,20 @@ class WatsonFactory {
     /** @var null|string */
     private $password;
 
+    /**
+     * WatsonFactory constructor.
+     *
+     * @param null $username
+     * @param null $password
+     */
     public function __construct ($username = null, $password = null) {
         $this->username = $username;
         $this->password = $password;
     }
 
     /**
+     * Get username
+     *
      * @return null|string
      */
     public function getUsername()
@@ -29,6 +37,8 @@ class WatsonFactory {
     }
 
     /**
+     * Set username
+     *
      * @param null|string $username
      */
     public function setUsername($username)
@@ -37,6 +47,8 @@ class WatsonFactory {
     }
 
     /**
+     * Get password
+     *
      * @return null|string
      */
     public function getPassword()
@@ -45,6 +57,8 @@ class WatsonFactory {
     }
 
     /**
+     * Set password
+     *
      * @param null|string $password
      */
     public function setPassword($password)
@@ -55,7 +69,7 @@ class WatsonFactory {
     /**
      * Create Conversation Service
      *
-     * @param null $workspaceId
+     * @param null|string $workspaceId
      *
      * @return WatsonConversationService
      */

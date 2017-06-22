@@ -55,14 +55,7 @@ class HttpClient implements HttpClientInterface {
     }
 
     /**
-     * Make HTTP Get Request
-     *
-     * @param string $url
-     * @param null|array $headers
-     * @param null|array $options
-     *
-     * @return array
-     * @throws WatsonRequestException
+     * {@inheritdoc}
      */
 	public function get ($url, $headers = null, $options = null) {
 	    $headers = $this->buildDefaultHeaders($headers);
@@ -78,15 +71,7 @@ class HttpClient implements HttpClientInterface {
 	}
 
     /**
-     * Make HTTP Post Request
-     *
-     * @param string $url
-     * @param null|array $data
-     * @param null|array $headers
-     * @param null|array $options
-     *
-     * @return array
-     * @throws WatsonRequestException
+     * {@inheritdoc}
      */
     public function post ($url, $data = null, $headers = null, $options = null) {
         $headers = $this->buildDefaultHeaders($headers, self::CONTENT_TYPE_JSON);
@@ -101,5 +86,6 @@ class HttpClient implements HttpClientInterface {
 
         return $response;
     }
+
 
 }
