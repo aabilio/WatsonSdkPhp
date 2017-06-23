@@ -4,7 +4,6 @@ namespace WatsonSdkPhp\Helpers;
 
 use WatsonSdkPhp\Exceptions\WatsonRequestException;
 use WatsonSdkPhp\Interfaces\HttpClientInterface;
-require_once 'vendor/rmccue/requests/library/Requests.php';
 
 class HttpClient implements HttpClientInterface {
 
